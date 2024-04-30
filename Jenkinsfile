@@ -26,19 +26,18 @@ pipeline {
                 }
             }
         }
-        stage('Deploy') {
-            steps {
-                script {
-                    sh './mvnw package -DskipTests' // Skip tests because they were already run
-                    // bat '.\\mvnw package -DskipTests' for Windows
-                }
-                sshagent(credentials: ['mudit_test']) {
-                    sh "scp -o StrictHostKeyChecking=no target/*.jar ${DEPLOY_USER}@${DEPLOY_SERVER}:${REMOTE_DIR}"
-                    sh "ssh ${DEPLOY_USER}@${DEPLOY_SERVER} 'cd ${REMOTE_DIR} && java -jar *.jar'"
-                }
+      stage('Deploy') {
+          steps {
+            script {
+            sh './mvnw package -DskipTests' // Skip tests because they were already run
+            // bat '.\\mvnw package -DskipTests' for Windows
+            sshagent(credentials: ['mudit_key']) {
+                sh "scp -o StrictHostKeyChecking=no target/*.jar ${DEPLOY_USER}@${DEPLOY_SERVER}:${REMOTE_DIR}"
+                sh "ssh ${DEPLOY_USER}@${DEPLOY_SERVER} 'cd ${REMOTE_DIR} && java -jar *.jar'"
             }
         }
     }
+}
     post {
         always {
             echo 'Pipeline execution complete.'
