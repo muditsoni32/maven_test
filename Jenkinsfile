@@ -33,8 +33,8 @@ pipeline {
                     // bat '.\\mvnw package -DskipTests' for Windows
                 }
                 sshagent(credentials: ['mudit_test']) {
-                    sh "scp -o StrictHostKeyChecking=no target/*.jar ${DEPLOY_USER}@${DEPLOY_SERVER}:${REMOTE_DIR}"
-                    sh "ssh ${DEPLOY_USER}@${DEPLOY_SERVER} 'cd ${REMOTE_DIR} && java -jar *.jar'"
+                    sh "sudo scp -o StrictHostKeyChecking=no target/*.jar ${DEPLOY_USER}@${DEPLOY_SERVER}:${REMOTE_DIR}"
+                    sh "sudo ssh ${DEPLOY_USER}@${DEPLOY_SERVER} 'cd ${REMOTE_DIR} && java -jar *.jar'"
                 }
             }
         }
