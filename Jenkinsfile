@@ -3,8 +3,8 @@ pipeline {
 
     environment {
         DEPLOY_SERVER = '18.206.147.42'
-        DEPLOY_USER = 'deployuser'
-        REMOTE_DIR = '/path/to/deployment/directory'
+        DEPLOY_USER = 'ec2-user'
+        REMOTE_DIR = '/mnt/'
     }
 
     stages {
@@ -39,7 +39,7 @@ pipeline {
                 sshPublisher(
                     publishers: [
                         sshPublisherDesc(
-                            configName: 'my-ssh-connection', // Pre-configured SSH server in Jenkins settings
+                            configName: 'mudit_key', // Pre-configured SSH server in Jenkins settings
                             transfers: [
                                 sshTransfer(
                                     sourceFiles: '**/target/*.jar', // Adjust this based on actual output of your build
