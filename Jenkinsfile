@@ -4,7 +4,7 @@ pipeline {
     environment {
         DEPLOY_SERVER = '18.206.147.42'
         DEPLOY_USER = 'ec2-user'
-        REMOTE_DIR = '/mnt/'
+        REMOTE_DIR = '/mnt/build/'
     }
 
     stages {
