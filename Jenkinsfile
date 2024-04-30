@@ -12,13 +12,14 @@ pipeline {
             steps {
                 git 'https://github.com/vdespa-collab/java-rest-api-calculator.git'
                 sh './mvnw clean compile'
-                // bat '.\\mvnw clean compile'
+                // bat '.\\mvnw clean compile' for Windows
             }
         }
+
         stage('Test') {
             steps {
                 sh './mvnw test'
-                // bat '.\\mvnw test'
+                // bat '.\\mvnw test' for Windows
             }
             post {
                 always {
@@ -26,18 +27,21 @@ pipeline {
                 }
             }
         }
-      stage('Deploy') {
-          steps {
-            script {
-            sh './mvnw package -DskipTests' // Skip tests because they were already run
-            // bat '.\\mvnw package -DskipTests' for Windows
-            sshagent(credentials: ['mudit_key']) {
-                sh "scp -o StrictHostKeyChecking=no target/*.jar ${DEPLOY_USER}@${DEPLOY_SERVER}:${REMOTE_DIR}"
-                sh "ssh ${DEPLOY_USER}@${DEPLOY_SERVER} 'cd ${REMOTE_DIR} && java -jar *.jar'"
+
+        stage('Deploy') {
+            steps {
+                script {
+                    sh './mvnw package -DskipTests' // Skip tests because they were already run
+                    // bat '.\\mvnw package -DskipTests' for Windows
+                    sshagent(credentials: ['mudit_key']) {
+                        sh "scp -o StrictHostKeyChecking=no target/*.jar ${DEPLOY_USER}@${DEPLOY_SERVER}:${REMOTE_DIR}"
+                        sh "ssh ${DEPLOY_USER}@${DEPLOY_SERVER} 'cd ${REMOTE_DIR} && java -jar *.jar'"
+                    }
+                }
             }
         }
     }
-}
+
     post {
         always {
             echo 'Pipeline execution complete.'
