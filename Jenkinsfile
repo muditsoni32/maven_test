@@ -32,7 +32,7 @@ pipeline {
                     sh './mvnw package -DskipTests' // Skip tests because they were already run
                     // bat '.\\mvnw package -DskipTests' for Windows
                 }
-                sshAgent(credentials: ['mudit_key']) {
+                sshAgent(credentials: ['mudit_test']) {
                     sh "scp target/*.jar ${DEPLOY_USER}@${DEPLOY_SERVER}:${REMOTE_DIR}"
                     sh "ssh ${DEPLOY_USER}@${DEPLOY_SERVER} 'cd ${REMOTE_DIR} && java -jar *.jar'"
                 }
